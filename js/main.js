@@ -47,6 +47,42 @@ gameBoard.classList.add('game-board');
 
 main.append(gameBoard);
 
+const cards = cardPairs.concat(cardPairs);
+
+shuffleCards(cards);
+
+cards.forEach(card => gameBoard.append(createCard(card)));
+
+function shuffleCards(cards) {
+    let index = cards.length;
+
+    while (index) {
+        const i = Math.floor(Math.random() * index--);
+        let element = cards[index];
+        cards[index] = cards[i];
+        cards[i] = element;
+    }
+
+    return cards;
+}
+
+function createCard(card) {
+    const container = document.createElement('div');
+    container.classList.add('game-board__card');
+
+    const cardFront = document.createElement('div');
+    cardFront.classList.add('game-board__card-front');
+
+    const cardBack = document.createElement('img');
+    cardBack.src = `./assets/images/${card.image}`;
+    cardBack.classList.add('game-board__card-back');
+
+    container.append(cardFront, cardBack);
+
+    return container;
+}
+
+
 
 
 
