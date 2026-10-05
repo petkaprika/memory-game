@@ -21,6 +21,7 @@ application.append(header);
 const newGameBtn = document.createElement('button');
 newGameBtn.classList.add('button');
 newGameBtn.textContent = 'New game';
+newGameBtn.addEventListener('click', newGame);
 
 const leaderboardBtn = document.createElement('button');
 leaderboardBtn.classList.add('button');
@@ -78,6 +79,7 @@ const numberOfMoves = document.createElement('p');
 const newGameModalBtn = document.createElement('button');
 newGameModalBtn.textContent = 'New game';
 newGameModalBtn.classList.add('button');
+newGameModalBtn.addEventListener('click', newGame);
 
 const closeBtn = document.createElement('button');
 closeBtn.classList.add('button');
@@ -203,6 +205,26 @@ function createCard(card) {
     container.append(cardFront, cardBack);
 
     return container;
+}
+
+function newGame() {
+    clearTimeout(timerId);
+    timerId = null;
+    firstCard = null;
+    secondCard = null;
+    movesCount = 0;
+    pairsCount = 0;
+    moves.textContent = `Moves: ${movesCount}`;
+    pairs.textContent = `Pairs: ${pairsCount} / ${numberOfPairs}`;
+
+    shuffleCards(cards);
+
+    gameBoard.replaceChildren();
+    const fragment = document.createDocumentFragment();
+    cards.forEach(card => fragment.append(createCard(card)));
+    gameBoard.append(fragment);
+
+    closeVictoryModal();
 }
 
 

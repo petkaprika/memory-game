@@ -50,6 +50,8 @@ body {
 
     border-radius: 1rem;
     overflow: hidden;
+
+    cursor: pointer;
 }
 
 .game-board__card-back {
@@ -127,4 +129,10 @@ body {
     border: none;
     background-color: var(--background-color-button);
     color: var(--text-color);
+
+    transition: transform 0.5s;
+}
+
+.button:hover {
+    transform: scale(1.05);
 }
