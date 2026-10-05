@@ -6,6 +6,7 @@ let secondCard = null;
 let timerId;
 let movesCount = 0;
 let pairsCount = 0;
+const leaderboardLimit = 10;
 
 const body = document.querySelector('body');
 const application = document.createElement('div');
@@ -26,6 +27,7 @@ newGameBtn.addEventListener('click', newGame);
 const leaderboardBtn = document.createElement('button');
 leaderboardBtn.classList.add('button');
 leaderboardBtn.textContent = 'Leaderboard';
+leaderboardBtn.addEventListener('click', showLeaderboardModal);
 
 header.append(newGameBtn, leaderboardBtn);
 
@@ -64,7 +66,7 @@ const modal = document.createElement('div');
 modal.classList.add('modal');
 modal.addEventListener('click', (event) => {
     if (event.target === modal) {
-        closeVictoryModal();
+        closeModal();
     }
 });
 
@@ -87,7 +89,7 @@ newGameModalBtn.addEventListener('click', newGame);
 const closeBtn = document.createElement('button');
 closeBtn.classList.add('button');
 closeBtn.textContent = 'Close';
-closeBtn.addEventListener('click', closeVictoryModal);
+closeBtn.addEventListener('click', closeModal);
 
 buttonsContainer.append(newGameModalBtn, closeBtn);
 buttonsContainer.classList.add('modal__buttons');
@@ -99,7 +101,7 @@ main.append(modal);
 
 document.addEventListener('keydown', (e) => {
     if (e.code === 'Escape' && modal.classList.contains('modal_open')) {
-        closeVictoryModal();
+        closeModal();
     }
 });
 
@@ -141,17 +143,12 @@ function updatePairs() {
 
 function checkVictory() {
     if (pairsCount === numberOfPairs) {
+        saveResult();
         showVictoryModal();
     }
 }
 
-function showVictoryModal() {
-    modal.classList.add('modal_open');
-    numberOfMoves.textContent = `Number of moves: ${movesCount}`;
-    body.classList.add('body_lock');
-}
-
-function closeVictoryModal() {
+function closeModal() {
     modal.classList.remove('modal_open');
     body.classList.remove('body_lock');
 }
@@ -230,11 +227,97 @@ function newGame() {
     cards.forEach(card => fragment.append(createCard(card)));
     gameBoard.append(fragment);
 
-    closeVictoryModal();
+    closeModal();
 }
 
+function saveResult() {
+    const results = JSON.parse(localStorage.getItem('memoryGameResults')) || [];
 
+    const now = new Date();
 
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const year = now.getFullYear();
 
+    const result = {
+        moves: movesCount,
+        date: `${day}.${month}.${year}`,
+        timestamp: Date.now(),
+    };
+
+    results.push(result);
+
+    localStorage.setItem('memoryGameResults', JSON.stringify(results));
+}
+
+function getLeaderboard() {
+    const results = JSON.parse(localStorage.getItem('memoryGameResults')) || [];
+
+    const copyResults = [...results];
+    copyResults.sort((a, b) => {
+        if (a.moves !== b.moves) {
+            return a.moves - b.moves;
+        }
+        return a.timestamp - b.timestamp;
+    });
+
+    return copyResults;
+}
+
+function showVictoryModal() {
+    renderVictoryModal();
+    modal.classList.add('modal_open');
+    body.classList.add('body_lock');
+}
+
+function showLeaderboardModal() {
+    renderLeaderboardModal();
+    modal.classList.add('modal_open');
+    body.classList.add('body_lock');
+}
+
+function renderVictoryModal() {
+    modalContent.replaceChildren();
+
+    numberOfMoves.textContent = `Number of moves: ${movesCount}`;
+
+    modalContent.append(
+        modalDescription,
+        numberOfMoves,
+        buttonsContainer
+    );
+}
+
+function renderLeaderboardModal() {
+    const results = getLeaderboard().slice(0, leaderboardLimit);
+
+    modalContent.replaceChildren();
+
+    const leaderboardTitle = document.createElement('p');
+    leaderboardTitle.textContent = 'Leaderboard';
+
+    modalContent.append(leaderboardTitle);
+
+    if (results.length === 0) {
+        const emptyMessage = document.createElement('p');
+        emptyMessage.textContent = 'No games yet';
+
+        modalContent.append(emptyMessage, closeBtn);
+
+        return;
+    }
+
+    const leaderboardList = document.createElement('ol');
+
+    results.forEach((result) => {
+        const leaderboardItem = document.createElement('li');
+        leaderboardItem.textContent =
+            `${result.moves} moves — ${result.date}`;
+
+        leaderboardList.append(leaderboardItem);
+    });
+
+    modalContent.append(leaderboardList, closeBtn);
+}
 
 
