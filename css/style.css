@@ -1,0 +1,74 @@
+:root {
+    --card-color: #FED8B1;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+.application {
+    margin: 0 auto;
+    max-width: 144rem;
+    padding: 2rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-board {
+    width: 70rem;
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+}
+
+.game-board__card {
+    width: 12rem;
+    aspect-ratio: 1 / 1;
+
+    position: relative;
+
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.game-board__card-back {
+    position: absolute;
+
+    width: 12rem;
+    height: 12rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    display: none;
+}
+
+.game-board__card-front {
+    position: absolute;
+
+    width: 12rem;
+    height: 12rem;
+
+    background-color: var(--card-color);
+}
+
+.game-board__img {
+    max-width: 100%;
+    width: 9rem;
+    height: 9rem;
+    object-fit: contain;
+}

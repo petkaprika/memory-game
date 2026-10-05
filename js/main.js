@@ -73,10 +73,15 @@ function createCard(card) {
     const cardFront = document.createElement('div');
     cardFront.classList.add('game-board__card-front');
 
-    const cardBack = document.createElement('img');
-    cardBack.src = `./assets/images/${card.image}`;
+    const cardBack = document.createElement('div');
     cardBack.classList.add('game-board__card-back');
 
+    const image = document.createElement('img');
+    image.src = `./assets/images/${card.image}`;
+    image.alt = `${card.image}`;
+    image.classList.add('game-board__img');
+
+    cardBack.append(image);
     container.append(cardFront, cardBack);
 
     return container;
