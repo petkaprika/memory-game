@@ -1,6 +1,10 @@
 import { cardPairs } from "./cards.js";
 
 const numberOfPairs = 8;
+let firstCard = null;
+let secondCard = null;
+let timerId;
+let movesCount = 0;
 
 const body = document.querySelector('body');
 const application = document.createElement('div');
@@ -45,6 +49,14 @@ main.append(gameInfo);
 const gameBoard = document.createElement('div');
 gameBoard.classList.add('game-board');
 
+gameBoard.addEventListener('click', (event) => {
+    const card = event.target.closest('.game-board__card');
+    if (card) {
+        openCard(card);
+
+    }
+});
+
 main.append(gameBoard);
 
 const cards = cardPairs.concat(cardPairs);
@@ -52,6 +64,51 @@ const cards = cardPairs.concat(cardPairs);
 shuffleCards(cards);
 
 cards.forEach(card => gameBoard.append(createCard(card)));
+
+function openCard(card) {
+    if (card.classList.contains('game-board__card_found')) {
+        return;
+    }
+    const cardBack = card.querySelector('.game-board__card-back');
+    if (!cardBack.classList.contains('game-board__card-back_open')) {
+        if (!firstCard) {
+            firstCard = card;
+            cardBack.classList.add('game-board__card-back_open');
+        } else if (!secondCard) {
+            secondCard = card;
+            cardBack.classList.add('game-board__card-back_open');
+            if (firstCard.dataset.pair === secondCard.dataset.pair) {
+                markCards();
+
+            } else {
+                console.log('not pair');
+                timerId = setTimeout(closeCards, 1000, firstCard, secondCard);
+            }
+            updateMoves();
+        }
+    };
+}
+
+function updateMoves() {
+    movesCount++;
+    moves.textContent = `Moves: ${movesCount}`;
+}
+
+function markCards() {
+    firstCard.classList.add('game-board__card_found');
+    secondCard.classList.add('game-board__card_found');
+    firstCard = null;
+    secondCard = null;
+}
+
+function closeCards(...cards) {
+    cards.forEach(card => {
+        const cardBack = card.querySelector('.game-board__card-back');
+        cardBack.classList.remove('game-board__card-back_open');
+    });
+    firstCard = null;
+    secondCard = null;
+}
 
 function shuffleCards(cards) {
     let index = cards.length;
@@ -69,6 +126,7 @@ function shuffleCards(cards) {
 function createCard(card) {
     const container = document.createElement('div');
     container.classList.add('game-board__card');
+    container.dataset.pair = `${card.pair}`;
 
     const cardFront = document.createElement('div');
     cardFront.classList.add('game-board__card-front');
