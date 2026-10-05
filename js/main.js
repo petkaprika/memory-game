@@ -5,6 +5,7 @@ let firstCard = null;
 let secondCard = null;
 let timerId;
 let movesCount = 0;
+let pairsCount = 0;
 
 const body = document.querySelector('body');
 const application = document.createElement('div');
@@ -53,7 +54,6 @@ gameBoard.addEventListener('click', (event) => {
     const card = event.target.closest('.game-board__card');
     if (card) {
         openCard(card);
-
     }
 });
 
@@ -79,7 +79,6 @@ function openCard(card) {
             cardBack.classList.add('game-board__card-back_open');
             if (firstCard.dataset.pair === secondCard.dataset.pair) {
                 markCards();
-
             } else {
                 console.log('not pair');
                 timerId = setTimeout(closeCards, 1000, firstCard, secondCard);
@@ -87,6 +86,18 @@ function openCard(card) {
             updateMoves();
         }
     };
+}
+
+function updatePairs() {
+    pairsCount++;
+    pairs.textContent = `Pairs: ${pairsCount} / ${numberOfPairs}`;
+    checkVictory();
+}
+
+function checkVictory() {
+    if (pairsCount === numberOfPairs) {
+        console.log('Victory');
+    }
 }
 
 function updateMoves() {
@@ -99,6 +110,7 @@ function markCards() {
     secondCard.classList.add('game-board__card_found');
     firstCard = null;
     secondCard = null;
+    updatePairs();
 }
 
 function closeCards(...cards) {
