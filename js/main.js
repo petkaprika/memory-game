@@ -76,6 +76,9 @@ modalDescription.textContent = 'Congratulations! You won!';
 
 const numberOfMoves = document.createElement('p');
 
+const buttonsContainer = document.createElement('div');
+
+
 const newGameModalBtn = document.createElement('button');
 newGameModalBtn.textContent = 'New game';
 newGameModalBtn.classList.add('button');
@@ -86,7 +89,10 @@ closeBtn.classList.add('button');
 closeBtn.textContent = 'Close';
 closeBtn.addEventListener('click', closeVictoryModal);
 
-modalContent.append(modalDescription, numberOfMoves, newGameModalBtn, closeBtn);
+buttonsContainer.append(newGameModalBtn, closeBtn);
+buttonsContainer.classList.add('modal__buttons');
+
+modalContent.append(modalDescription, numberOfMoves, buttonsContainer);
 
 modal.append(modalContent);
 main.append(modal);

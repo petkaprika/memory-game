@@ -6,6 +6,14 @@
     --text-color: #464646;
 }
 
+@font-face {
+    font-family: 'Inter Variable';
+    src: url('../assets/fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
 * {
     padding: 0;
     margin: 0;
@@ -17,7 +25,10 @@ html {
 }
 
 body {
+    font-family: Inter, sans-serif;
+    font-size: 1.8rem;
     background-color: var(--background-color-main);
+    color: var(--text-color);
 }
 
 .application {
@@ -27,7 +38,7 @@ body {
 
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 2rem;
     align-items: center;
     justify-content: center;
 }
@@ -115,6 +126,7 @@ body {
 
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 2rem;
 }
 
@@ -123,6 +135,9 @@ body {
 }
 
 .button {
+    font-family: inherit;
+    font-size: 1.8rem;
+
     padding: 1rem 2rem;
     border-radius: 1rem;
     cursor: pointer;
@@ -130,9 +145,29 @@ body {
     background-color: var(--background-color-button);
     color: var(--text-color);
 
-    transition: transform 0.5s;
+    transition: transform 0.3s;
 }
 
 .button:hover {
     transform: scale(1.05);
+}
+
+.header {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+}
+
+.game-info {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    padding-bottom: 3rem;
+}
+
+.modal__buttons {
+    display: flex;
+    gap: 3rem;
 }
