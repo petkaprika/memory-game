@@ -19,7 +19,6 @@ header.classList.add('header');
 application.append(header);
 
 const newGameBtn = document.createElement('button');
-newGameBtn.classList.add('button');
 newGameBtn.textContent = 'New game';
 
 const leaderboardBtn = document.createElement('button');
@@ -58,6 +57,28 @@ gameBoard.addEventListener('click', (event) => {
 });
 
 main.append(gameBoard);
+
+const modal = document.createElement('div');
+modal.classList.add('modal');
+
+const modalContent = document.createElement('div');
+modalContent.classList.add('modal__content');
+
+const modalDescription = document.createElement('p');
+modalDescription.textContent = 'Congratulations! You won!';
+
+const numberOfMoves = document.createElement('p');
+
+const newGameModalBtn = document.createElement('button');
+newGameModalBtn.textContent = 'New game';
+
+const closeBtn = document.createElement('button');
+closeBtn.textContent = 'Close';
+
+modalContent.append(modalDescription, numberOfMoves, newGameModalBtn, closeBtn);
+
+modal.append(modalContent);
+main.append(modal);
 
 const cards = cardPairs.concat(cardPairs);
 
