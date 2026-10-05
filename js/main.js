@@ -19,6 +19,7 @@ header.classList.add('header');
 application.append(header);
 
 const newGameBtn = document.createElement('button');
+newGameBtn.classList.add('button');
 newGameBtn.textContent = 'New game';
 
 const leaderboardBtn = document.createElement('button');
@@ -60,6 +61,11 @@ main.append(gameBoard);
 
 const modal = document.createElement('div');
 modal.classList.add('modal');
+modal.addEventListener('click', (event) => {
+    if (event.target === modal) {
+        closeVictoryModal();
+    }
+});
 
 const modalContent = document.createElement('div');
 modalContent.classList.add('modal__content');
@@ -71,14 +77,23 @@ const numberOfMoves = document.createElement('p');
 
 const newGameModalBtn = document.createElement('button');
 newGameModalBtn.textContent = 'New game';
+newGameModalBtn.classList.add('button');
 
 const closeBtn = document.createElement('button');
+closeBtn.classList.add('button');
 closeBtn.textContent = 'Close';
+closeBtn.addEventListener('click', closeVictoryModal);
 
 modalContent.append(modalDescription, numberOfMoves, newGameModalBtn, closeBtn);
 
 modal.append(modalContent);
 main.append(modal);
+
+document.addEventListener('keydown', (e) => {
+    if (e.code === 'Escape' && modal.classList.contains('modal_open')) {
+        closeVictoryModal();
+    }
+});
 
 const cards = cardPairs.concat(cardPairs);
 
@@ -96,6 +111,7 @@ function openCard(card) {
             firstCard = card;
             cardBack.classList.add('game-board__card-back_open');
         } else if (!secondCard) {
+            updateMoves();
             secondCard = card;
             cardBack.classList.add('game-board__card-back_open');
             if (firstCard.dataset.pair === secondCard.dataset.pair) {
@@ -104,7 +120,7 @@ function openCard(card) {
                 console.log('not pair');
                 timerId = setTimeout(closeCards, 1000, firstCard, secondCard);
             }
-            updateMoves();
+
         }
     };
 }
@@ -117,8 +133,19 @@ function updatePairs() {
 
 function checkVictory() {
     if (pairsCount === numberOfPairs) {
-        console.log('Victory');
+        showVictoryModal();
     }
+}
+
+function showVictoryModal() {
+    modal.classList.add('modal_open');
+    numberOfMoves.textContent = `Number of moves: ${movesCount}`;
+    body.classList.add('body_lock');
+}
+
+function closeVictoryModal() {
+    modal.classList.remove('modal_open');
+    body.classList.remove('body_lock');
 }
 
 function updateMoves() {

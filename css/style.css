@@ -1,5 +1,9 @@
 :root {
-    --card-color: #FED8B1;
+    --card-color: #FBD889;
+    --modal-background: rgba(64, 64, 61, 0.8);
+    --background-color-main: #E9EAE3;
+    --background-color-button: #DB9435;
+    --text-color: #464646;
 }
 
 * {
@@ -10,6 +14,10 @@
 
 html {
     font-size: 62.5%;
+}
+
+body {
+    background-color: var(--background-color-main);
 }
 
 .application {
@@ -75,4 +83,48 @@ html {
     width: 9rem;
     height: 9rem;
     object-fit: contain;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+
+    z-index: 100;
+
+    opacity: 0;
+    visibility: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--modal-background);
+}
+
+.modal_open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal__content {
+    padding: 4rem;
+    background-color: var(--background-color-main);
+    border-radius: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.body_lock {
+    overflow-y: hidden;
+}
+
+.button {
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    border: none;
+    background-color: var(--background-color-button);
+    color: var(--text-color);
 }
